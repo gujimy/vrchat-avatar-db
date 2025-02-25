@@ -4,11 +4,11 @@
 
 一个用于管理 VRChat 模型的 Tampermonkey 脚本。
 
-<p align="center">
+<div align="center">
   <a href="https://github.com/gujimy/vrchat-avatar-db/releases/latest/download/vrchat_avatar_db.user.js">
-    <img src="https://img.shields.io/badge/安装-脚本-green.svg?style=for-the-badge" alt="安装脚本">
+    <img src="https://img.shields.io/badge/安装-VRChat_模型数据库-2196F3.svg?style=for-the-badge&logo=tampermonkey&logoColor=white&labelColor=101F2E" alt="安装VRChat模型数据库">
   </a>
-</p>
+</div>
 
 ## 功能截图
 

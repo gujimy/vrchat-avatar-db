@@ -1,18 +1,15 @@
 # VRChat Avatar Database Manager
 
-<p align="center">
-  <img src="img/logo.png" alt="VRChat Avatar Database Manager Logo" width="200">
-</p>
 
 [中文文档](README-zh.md) | [日本語ドキュメント](README-jp.md)
 
 A Tampermonkey script for managing VRChat avatars.
 
-<p align="center">
+<div align="center">
   <a href="https://github.com/gujimy/vrchat-avatar-db/releases/latest/download/vrchat_avatar_db.user.js">
-    <img src="https://img.shields.io/badge/Install-Script-green.svg?style=for-the-badge" alt="Install Script">
+    <img src="https://img.shields.io/badge/INSTALL-VRChat_DB_Manager-2196F3.svg?style=for-the-badge&logo=tampermonkey&logoColor=white&labelColor=101F2E" alt="Install VRChat DB Manager">
   </a>
-</p>
+</div>
 
 ## Feature Screenshots
 

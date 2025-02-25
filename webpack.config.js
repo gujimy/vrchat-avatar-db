@@ -15,6 +15,8 @@ const userscriptHeaders = `// ==UserScript==
 // @grant        GM_xmlhttpRequest
 // @connect      api.vrchat.cloud
 // @connect      vrchat.com
+// @updateURL    https://github.com/gujimy/vrchat-avatar-db/releases/latest/download/vrchat_avatar_db.user.js
+// @downloadURL  https://github.com/gujimy/vrchat-avatar-db/releases/latest/download/vrchat_avatar_db.user.js
 // ==/UserScript==
 `;
 

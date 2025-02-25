@@ -1,0 +1,432 @@
+@charset "UTF-8";
+
+/* VRChat Avatar Database Manager Styles */
+.avatar-db-container {
+    position: fixed !important;
+    bottom: 20px !important;
+    right: 20px !important;
+    background: rgba(244, 247, 250, 0.95);
+    padding: 15px;
+    border-radius: 16px;
+    z-index: 2147483647 !important; /* 最大z-index值 */
+    color: #2196F3;
+    font-family: Arial, sans-serif;
+    box-shadow: 0 4px 12px rgba(33, 150, 243, 0.15);
+    min-width: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: auto !important;
+    transform: translateZ(0) !important;
+    max-height: calc(100vh - 40px) !important;
+    overflow: visible !important;
+}
+
+.avatar-db-button {
+    background: #2196F3;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    margin: 5px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(33, 150, 243, 0.2);
+    font-size: 13px;
+    width: 100%;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.avatar-db-button:hover {
+    background: #1976D2;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(33, 150, 243, 0.3);
+}
+
+.avatar-db-button:active {
+    transform: translateY(1px);
+}
+
+.avatar-db-button:focus {
+    outline: none;
+}
+
+.avatar-db-modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(244, 247, 250, 0.98);
+    padding: 20px;
+    border-radius: 16px;
+    z-index: 10000;
+    box-shadow: 0 4px 20px rgba(33, 150, 243, 0.2);
+    color: #1565C0;
+}
+
+.avatar-db-textarea {
+    width: 400px;
+    height: 300px;
+    margin: 10px 0;
+    background: #E8F0FE;
+    color: #1565C0;
+    border: 1px solid #90CAF9;
+    border-radius: 20px;
+    padding: 10px;
+    font-size: 13px;
+}
+
+.avatar-card {
+    background: #FFFFFF;
+    border-radius: 8px;
+    padding: 10px;
+    margin: 0;
+    width: auto;
+    text-align: center;
+    position: relative;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(33, 150, 243, 0.15);
+    height: fit-content;
+    align-self: start;
+}
+
+.platform-icon {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 20px;
+    height: 20px;
+}
+
+.progress {
+    width: 100%;
+    background: #E3F2FD;
+    border-radius: 20px;
+    overflow: hidden;
+    margin: 10px 0;
+    height: 6px;
+}
+
+.progress-bar {
+    height: 100%;
+    background: #2196F3;
+    width: 0;
+    transition: width 0.3s ease;
+}
+
+.header {
+    position: sticky;
+    top: 0;
+    background-color: #F4F7FA;
+    padding: 15px 20px;
+    border-bottom: 1px solid #E3F2FD;
+    z-index: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    white-space: nowrap;
+}
+
+.avatar-count {
+    color: #1565C0;
+    font-size: 13px;
+    padding: 5px 12px;
+    background: rgba(33, 150, 243, 0.1);
+    border-radius: 15px;
+    white-space: nowrap;
+    display: inline-block;
+}
+
+.header > div {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+
+.header button {
+    white-space: nowrap;
+}
+
+.search-box, .sort-select {
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: 1px solid #90CAF9;
+    background: #E8F0FE;
+    color: #1565C0;
+    transition: all 0.3s ease;
+    font-size: 13px;
+}
+
+.search-box:focus, .sort-select:focus {
+    outline: none;
+    border-color: #2196F3;
+    box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.2);
+    background: #F4F7FA;
+}
+
+.copy-id-btn {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: rgba(33, 150, 243, 0.8);
+    color: white;
+    border: none;
+    padding: 4px 12px;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 12px;
+    opacity: 0;
+    transition: all 0.3s ease;
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+}
+
+.avatar-card:hover .copy-id-btn {
+    opacity: 1;
+}
+
+.copy-id-btn.success {
+    background: rgba(76, 175, 80, 0.9);
+    opacity: 1;
+}
+
+.switch-button.success {
+    background: #4CAF50;
+}
+
+.switch-button.error {
+    background: #F44336;
+}
+
+.toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(33, 150, 243, 0.9);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    z-index: 10002;
+    animation: slideIn 0.3s ease, fadeOut 0.3s ease 2.7s forwards;
+    box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+    font-size: 13px;
+}
+
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+.switch-loading {
+    position: relative;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.switch-loading::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(100%); }
+}
+
+.import-message {
+    color: #1565C0;
+    margin-top: 10px;
+    max-height: 300px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    font-size: 13px;
+    line-height: 1.5;
+    padding: 10px;
+    border-radius: 10px;
+    background: #E3F2FD;
+}
+
+.import-message .error {
+    color: #D32F2F;
+    margin-bottom: 8px;
+}
+
+.import-message .success {
+    color: #2E7D32;
+    margin-bottom: 8px;
+}
+
+.import-message .warning {
+    color: #F57C00;
+    margin-bottom: 8px;
+}
+
+.success-list, .warning-list, .error-list {
+    margin: 8px 0;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 12px;
+    white-space: pre-line;
+    word-break: break-all;
+}
+
+.success-list {
+    background: rgba(46, 125, 50, 0.1);
+    color: #2E7D32;
+}
+
+.warning-list {
+    background: rgba(245, 124, 0, 0.1);
+    color: #F57C00;
+}
+
+.error-list {
+    background: rgba(211, 47, 47, 0.1);
+    color: #D32F2F;
+}
+
+.summary-container {
+    padding: 10px;
+    background: #F4F7FA;
+    border-radius: 10px;
+}
+
+.summary-container > div {
+    margin: 5px 0;
+}
+
+.refresh-spinner {
+    display: inline-block;
+    animation: spin 1s linear infinite;
+    font-size: 16px;
+}
+
+.refresh-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* 添加网格容器样式 */
+.avatar-grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 15px;
+    padding: 20px;
+    overflow-y: auto;
+    flex: 1;
+    background: #F4F7FA;
+    align-items: start;
+    min-height: 0;
+}
+
+.export-container {
+    position: relative;
+}
+
+.export-dropdown {
+    min-width: 120px;
+}
+
+.export-dropdown button {
+    padding: 8px 16px;
+    transition: all 0.3s ease;
+    border: none;
+    background: #fff;
+    color: #1565C0;
+    font-size: 13px;
+    text-align: center;
+    cursor: pointer;
+    margin: 0;
+}
+
+.export-dropdown button:hover {
+    background: #E3F2FD;
+}
+
+.export-dropdown button:active {
+    background: #BBDEFB;
+}
+
+/* 添加全局滚动条样式 */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #E3F2FD;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #90CAF9;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #64B5F6;
+}
+
+/* 修改特定容器的滚动条样式 */
+.avatar-grid-container::-webkit-scrollbar,
+.import-message::-webkit-scrollbar,
+.avatar-db-textarea::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.avatar-grid-container::-webkit-scrollbar-track,
+.import-message::-webkit-scrollbar-track,
+.avatar-db-textarea::-webkit-scrollbar-track {
+    background: #E3F2FD;
+    border-radius: 4px;
+}
+
+.avatar-grid-container::-webkit-scrollbar-thumb,
+.import-message::-webkit-scrollbar-thumb,
+.avatar-db-textarea::-webkit-scrollbar-thumb {
+    background: #90CAF9;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.avatar-grid-container::-webkit-scrollbar-thumb:hover,
+.import-message::-webkit-scrollbar-thumb:hover,
+.avatar-db-textarea::-webkit-scrollbar-thumb:hover {
+    background: #64B5F6;
+}
+
+.avatar-db-nav-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.2s ease;
+}
+
+.avatar-db-nav-button svg {
+    margin-right: 8px;
+} 

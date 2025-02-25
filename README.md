@@ -8,6 +8,12 @@
 
 A Tampermonkey script for managing VRChat avatars.
 
+<p align="center">
+  <a href="https://github.com/gujimy/vrchat-avatar-db/releases/latest/download/vrchat_avatar_db.user.js">
+    <img src="https://img.shields.io/badge/Install-Script-green.svg?style=for-the-badge" alt="Install Script">
+  </a>
+</p>
+
 ## Feature Screenshots
 
 ![Avatar Database Main Interface](img/1.png)

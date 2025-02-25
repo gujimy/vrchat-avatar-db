@@ -4,6 +4,12 @@
 
 一个用于管理 VRChat 模型的 Tampermonkey 脚本。
 
+<p align="center">
+  <a href="https://github.com/gujimy/vrchat-avatar-db/releases/latest/download/vrchat_avatar_db.user.js">
+    <img src="https://img.shields.io/badge/安装-脚本-green.svg?style=for-the-badge" alt="安装脚本">
+  </a>
+</p>
+
 ## 功能截图
 
 ![模型数据库主界面](img/1.png)

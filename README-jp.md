@@ -4,6 +4,12 @@
 
 VRChatアバターを管理するためのTampermonkeyスクリプト。
 
+<p align="center">
+  <a href="https://github.com/gujimy/vrchat-avatar-db/releases/latest/download/vrchat_avatar_db.user.js">
+    <img src="https://img.shields.io/badge/インストール-スクリプト-green.svg?style=for-the-badge" alt="スクリプトをインストール">
+  </a>
+</p>
+
 ## 機能スクリーンショット
 
 ![アバターデータベースのメイン画面](img/1.png)

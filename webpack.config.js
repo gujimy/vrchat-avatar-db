@@ -17,6 +17,8 @@ const userscriptHeaders = `// ==UserScript==
 // @connect      vrchat.com
 // @updateURL    https://github.com/gujimy/vrchat-avatar-db/releases/latest/download/vrchat_avatar_db.user.js
 // @downloadURL  https://github.com/gujimy/vrchat-avatar-db/releases/latest/download/vrchat_avatar_db.user.js
+// @license      MIT
+// @source       https://github.com/gujimy/vrchat-avatar-db
 // ==/UserScript==
 `;
 
@@ -27,13 +29,21 @@ module.exports = {
         path: path.resolve(__dirname, 'dist'),
         filename: 'vrchat_avatar_db.user.js'
     },
+    devtool: false,
+    optimization: {
+        minimize: false
+    },
     module: {
         rules: [
             {
                 test: /\.js$/,
                 exclude: /node_modules/,
                 use: {
-                    loader: 'babel-loader'
+                    loader: 'babel-loader',
+                    options: {
+                        compact: false,
+                        minified: false
+                    }
                 }
             },
             {

@@ -21,77 +21,89 @@ export class UIComponents {
             if (buttonText) {
                 buttonText.textContent = t('openDatabase');
             }
-            navButton.setAttribute('title', t('openDatabase'));
         }
-
-        // 更新数据库页面
-        const dbPage = document.querySelector('.avatar-db-page');
-        if (dbPage) {
-            // 更新头部按钮文本
-            const importBtn = dbPage.querySelector('.import-btn');
-            if (importBtn) importBtn.textContent = t('importModel');
-
-            const exportBtn = dbPage.querySelector('.export-btn');
-            if (exportBtn) exportBtn.textContent = t('exportModel');
-
-            const batchDeleteBtn = dbPage.querySelector('.batch-delete-btn');
-            if (batchDeleteBtn) {
-                if (batchDeleteBtn.textContent.includes('(')) {
-                    const count = batchDeleteBtn.textContent.match(/\((\d+)\)/)[1];
-                    batchDeleteBtn.textContent = `${t('confirmDelete')} (${count})`;
-                } else {
-                    batchDeleteBtn.textContent = t('batchDelete');
-                }
+        
+        // 更新检查按钮
+        const checkButtons = document.querySelectorAll('.check-btn');
+        checkButtons.forEach(btn => {
+            if (btn.classList.contains('check-btn') && !btn.getAttribute('data-checking')) {
+                btn.textContent = t('checkModel');
             }
-
-            const refreshBtn = dbPage.querySelector('.refresh-text');
-            if (refreshBtn) refreshBtn.textContent = t('refreshList');
-
-            const avatarCount = dbPage.querySelector('.avatar-count');
-            if (avatarCount) {
-                const count = avatarCount.textContent.match(/\d+/)[0];
-                avatarCount.textContent = `${t('modelCount')}: ${count}`;
+        });
+        
+        // 更新批量检查按钮
+        const batchCheckBtn = document.querySelector('.batch-check-btn');
+        if (batchCheckBtn && !batchCheckBtn.getAttribute('data-checking')) {
+            // 只有在未进入批量检查模式时才更新按钮文本
+            if (!batchCheckBtn.textContent.includes('(')) {
+                batchCheckBtn.textContent = t('batchCheck');
             }
-
-            // 更新搜索框占位符
-            const searchBox = dbPage.querySelector('.search-box');
-            if (searchBox) searchBox.placeholder = t('search');
-
-            // 更新排序选项
-            const sortSelect = dbPage.querySelector('.sort-select');
-            if (sortSelect) {
-                const currentValue = sortSelect.value;
-                sortSelect.innerHTML = `
-                    <option value="latest">${t('latest')}</option>
-                    <option value="oldest">${t('oldest')}</option>
-                    <option value="quest">${t('questPriority')}</option>
-                `;
-                sortSelect.value = currentValue;
-            }
-
-            // 更新所有模型卡片的文本
-            const cards = dbPage.querySelectorAll('.avatar-card');
-            cards.forEach(card => {
-                const authorText = card.querySelector('p');
-                if (authorText) {
-                    const authorName = authorText.textContent.split(': ')[1];
-                    authorText.textContent = `${t('author')}: ${authorName}`;
-                }
-
-                const switchBtn = card.querySelector('.switch-button');
-                if (switchBtn) {
-                    if (!switchBtn.classList.contains('switch-loading') && 
-                        !switchBtn.classList.contains('success') && 
-                        !switchBtn.classList.contains('error')) {
-                        switchBtn.textContent = t('switchModel');
-                    }
-                }
-
-                const copyBtn = card.querySelector('.copy-id-btn');
-                if (copyBtn && !copyBtn.classList.contains('success')) {
-                    copyBtn.textContent = t('copyId');
+        }
+        
+        // 更新取消按钮
+        const cancelBtn = document.querySelector('.cancel-check-btn');
+        if (cancelBtn) {
+            cancelBtn.textContent = t('cancel');
+        }
+        
+        // 更新其他需要本地化的元素
+        const avatarCount = document.querySelector('.avatar-count');
+        if (avatarCount) {
+            const count = avatarCount.textContent.match(/\d+/)[0];
+            avatarCount.textContent = `${t('modelCount')}: ${count}`;
+        }
+        
+        // 更新排序下拉菜单
+        const sortSelect = document.querySelector('.sort-select');
+        if (sortSelect) {
+            Array.from(sortSelect.options).forEach(option => {
+                if (option.value === 'latest') {
+                    option.textContent = t('latest');
+                } else if (option.value === 'oldest') {
+                    option.textContent = t('oldest');
+                } else if (option.value === 'quest') {
+                    option.textContent = t('questPriority');
                 }
             });
+        }
+        
+        // 更新搜索框占位符
+        const searchBox = document.querySelector('.search-box');
+        if (searchBox) {
+            searchBox.placeholder = t('search');
+        }
+        
+        // 更新导入/导出按钮
+        const importBtn = document.querySelector('.import-btn');
+        if (importBtn) {
+            importBtn.textContent = t('importModel');
+        }
+        
+        const exportBtn = document.querySelector('.export-btn');
+        if (exportBtn) {
+            exportBtn.textContent = t('exportModel');
+        }
+        
+        const exportCsvBtn = document.querySelector('.export-csv-btn');
+        if (exportCsvBtn) {
+            exportCsvBtn.textContent = t('csvExport');
+        }
+        
+        const exportTxtBtn = document.querySelector('.export-txt-btn');
+        if (exportTxtBtn) {
+            exportTxtBtn.textContent = t('txtExport');
+        }
+        
+        // 更新批量删除按钮
+        const batchDeleteBtn = document.querySelector('.batch-delete-btn');
+        if (batchDeleteBtn && !batchDeleteBtn.textContent.includes('(')) {
+            batchDeleteBtn.textContent = t('batchDelete');
+        }
+        
+        // 更新刷新按钮
+        const refreshText = document.querySelector('.refresh-text');
+        if (refreshText) {
+            refreshText.textContent = t('refreshList');
         }
     }
 
@@ -592,7 +604,8 @@ avtr_xxxxxx,"${t('modelName')}",${t('authorName')}</pre>
                 <a href="https://vrchat.com/home/avatar/${avatar.id}" target="_blank" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
                     <img src="${avatar.thumbnailImageUrl}" alt="${avatar.name}" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
                 </a>
-                <button class="copy-id-btn" data-id="${avatar.id}">${t('copyId')}</button>
+                <button class="copy-id-btn" data-id="${avatar.id}" style="position: absolute; top: 5px; left: 5px; background: rgba(33, 150, 243, 0.9); color: white; border: none; border-radius: 4px; padding: 3px 6px; font-size: 12px; cursor: pointer; transition: all 0.3s ease; opacity: 0;">${t('copyId')}</button>
+                <button class="check-btn" data-id="${avatar.id}" style="position: absolute; bottom: 5px; right: 5px; background: rgba(76, 175, 80, 0.9); color: white; border: none; border-radius: 4px; padding: 3px 6px; font-size: 12px; cursor: pointer; transition: all 0.3s ease; opacity: 0;">${t('checkModel')}</button>
             </div>
             <h4 style="margin: 10px 0; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #1565C0;">${avatar.name}</h4>
             <p style="color: #64B5F6; font-size: 12px; margin: 5px 0;">${t('author')}: ${avatar.authorName}</p>
@@ -602,6 +615,17 @@ avtr_xxxxxx,"${t('modelName')}",${t('authorName')}</pre>
         // 添加平台图标
         const platformIcon = createPlatformIcon(avatar);
         card.querySelector('div').appendChild(platformIcon);
+
+        // 添加卡片悬停时显示按钮的效果
+        card.addEventListener('mouseenter', () => {
+            card.querySelector('.copy-id-btn').style.opacity = '1';
+            card.querySelector('.check-btn').style.opacity = '1';
+        });
+        
+        card.addEventListener('mouseleave', () => {
+            card.querySelector('.copy-id-btn').style.opacity = '0';
+            card.querySelector('.check-btn').style.opacity = '0';
+        });
 
         this.setupCardEvents(card, avatar);
         return card;
@@ -623,6 +647,193 @@ avtr_xxxxxx,"${t('modelName')}",${t('authorName')}</pre>
                     copyBtn.classList.remove('success');
                 }, 1500);
             });
+        });
+
+        // 检查模型按钮事件
+        const checkBtn = card.querySelector('.check-btn');
+        checkBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const originalText = checkBtn.textContent;
+            checkBtn.textContent = t('checking') || '检查中...';
+            checkBtn.style.background = 'rgba(33, 150, 243, 0.9)';
+            checkBtn.disabled = true;
+            
+            try {
+                console.log(`开始检查模型: ${avatar.id}`);
+                
+                // 移除可能存在的旧模态框和遮罩
+                const existingModals = document.querySelectorAll('.avatar-db-modal, .avatar-db-modal-overlay');
+                existingModals.forEach(elem => {
+                    try {
+                        document.body.removeChild(elem);
+                    } catch (e) {
+                        console.warn('移除现有模态框元素失败:', e);
+                    }
+                });
+                
+                // 创建结果模态框
+                const { overlay, modal } = this.createCheckResultsModal();
+                
+                // 添加模态框到DOM
+                document.body.appendChild(overlay);
+                document.body.appendChild(modal);
+                console.log('检查结果模态框已添加到DOM');
+                
+                // 获取模态框中的元素
+                const progressBar = modal.querySelector('.check-progress-bar');
+                const status = modal.querySelector('.check-status');
+                const results = modal.querySelector('.check-results');
+                const title = modal.querySelector('h3');
+                const exportBtn = modal.querySelector('.export-deleted-btn');
+                const deletedContainer = modal.querySelector('.deleted-models-container');
+                const deletedList = modal.querySelector('.deleted-models-list');
+                
+                // 更新状态
+                title.textContent = t('checkingModels') || '正在检查模型...';
+                status.textContent = t('checking') || '检查中...';
+                
+                // 更新进度条
+                progressBar.style.width = '50%';
+                
+                // 检查模型状态
+                const result = await this.db.checkAvatarStatus(avatar.id);
+                console.log(`模型检查结果:`, result);
+                
+                // 更新进度条到100%
+                progressBar.style.width = '100%';
+                
+                // 添加结果项
+                const addResultItem = (avatar, result) => {
+                    const item = document.createElement('div');
+                    item.style.cssText = `
+                        display: flex;
+                        align-items: center;
+                        padding: 10px;
+                        border-radius: 8px;
+                        margin-bottom: 10px;
+                        border-left: 4px solid ${result.status === 'available' ? '#4CAF50' : result.status === 'unavailable' ? '#F44336' : '#FF9800'};
+                        background: ${result.status === 'available' ? 'rgba(76, 175, 80, 0.1)' : result.status === 'unavailable' ? 'rgba(244, 67, 54, 0.1)' : 'rgba(255, 152, 0, 0.1)'};
+                    `;
+                    
+                    item.innerHTML = `
+                        <div style="width: 40px; height: 40px; margin-right: 10px; flex-shrink: 0; overflow: hidden; border-radius: 4px;">
+                            <img src="${avatar.thumbnailImageUrl}" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                        <div style="flex-grow: 1; overflow: hidden;">
+                            <div style="font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${avatar.name}</div>
+                            <div style="font-size: 12px; color: #757575;">${avatar.id}</div>
+                        </div>
+                        <div style="margin-left: 10px; flex-shrink: 0; color: ${result.status === 'available' ? '#4CAF50' : result.status === 'unavailable' ? '#F44336' : '#FF9800'};">
+                            ${result.status === 'available' ? t('checkSuccess') || '已更新' : 
+                              result.status === 'unavailable' ? t('checkDeleted') || '已删除' : 
+                              t('checkError') || '检查失败'}
+                        </div>
+                    `;
+                    
+                    results.appendChild(item);
+                    
+                    // 如果是被删除的模型，同时添加到删除列表
+                    if (result.status === 'unavailable') {
+                        const deletedItem = document.createElement('div');
+                        deletedItem.style.cssText = `
+                            display: flex;
+                            justify-content: space-between;
+                            padding: 5px 0;
+                            border-bottom: 1px dashed #E0E0E0;
+                        `;
+                        deletedItem.innerHTML = `
+                            <div style="flex-grow: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${avatar.name}</div>
+                            <div style="color: #757575; margin-left: 10px;">${avatar.id}</div>
+                        `;
+                        deletedList.appendChild(deletedItem);
+                        
+                        // 如果有删除的模型，显示删除模型容器和导出按钮
+                        deletedContainer.style.display = 'block';
+                        exportBtn.style.opacity = '1';
+                        exportBtn.style.pointerEvents = 'auto';
+                        
+                        // 添加导出点击事件
+                        exportBtn.addEventListener('click', () => {
+                            const content = `${avatar.id},${avatar.name}`;
+                            downloadFile(content, 'deleted_vrchat_avatar.csv');
+                        });
+                    }
+                };
+                
+                if (result.status === 'available') {
+                    // 模型可用，更新数据
+                    this.db.updateAvatar(avatar.id, result.data);
+                    // 添加结果项
+                    addResultItem(avatar, result);
+                    // 更新当前卡片上的信息
+                    card.querySelector('h4').textContent = result.data.name;
+                    card.querySelector('p').textContent = `${t('author')}: ${result.data.authorName}`;
+                    card.querySelector('img').src = result.data.thumbnailImageUrl;
+                    
+                    // 更新统计
+                    modal.querySelector('#updated-count').textContent = '1';
+                    modal.querySelector('#deleted-count').textContent = '0';
+                    modal.querySelector('#error-count').textContent = '0';
+                    
+                    // 更新标题和状态
+                    title.textContent = t('checkComplete') || '检查完成';
+                    status.textContent = `${t('checkComplete') || '检查完成'}: 1 ${t('updated') || '已更新'}`;
+                    
+                } else if (result.status === 'unavailable') {
+                    // 模型不可用，从数据库中删除
+                    this.db.deleteAvatar(avatar.id);
+                    // 添加结果项
+                    addResultItem(avatar, result);
+                    
+                    // 更新统计
+                    modal.querySelector('#updated-count').textContent = '0';
+                    modal.querySelector('#deleted-count').textContent = '1';
+                    modal.querySelector('#error-count').textContent = '0';
+                    
+                    // 更新标题和状态
+                    title.textContent = t('checkComplete') || '检查完成';
+                    status.textContent = `${t('checkComplete') || '检查完成'}: 1 ${t('deleted') || '已删除'}`;
+                    
+                    // 添加淡出效果后移除卡片
+                    card.style.opacity = '0.5';
+                    card.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        card.remove();
+                    }, 2000);
+                } else {
+                    // 检查出错
+                    // 添加结果项
+                    addResultItem(avatar, result);
+                    
+                    // 更新统计
+                    modal.querySelector('#updated-count').textContent = '0';
+                    modal.querySelector('#deleted-count').textContent = '0';
+                    modal.querySelector('#error-count').textContent = '1';
+                    
+                    // 更新标题和状态
+                    title.textContent = t('checkComplete') || '检查完成';
+                    status.textContent = `${t('checkComplete') || '检查完成'}: 1 ${t('failed') || '失败'}`;
+                }
+                
+                setTimeout(() => {
+                    checkBtn.textContent = originalText;
+                    checkBtn.style.background = 'rgba(76, 175, 80, 0.9)';
+                    checkBtn.disabled = false;
+                }, 2000);
+            } catch (error) {
+                console.error(`检查模型失败: ${avatar.id}`, error);
+                checkBtn.textContent = t('checkError') || '检查失败';
+                checkBtn.style.background = 'rgba(255, 152, 0, 0.9)';
+                showToast(t('checkError') || `检查失败: ${error.message}`, 'error');
+                
+                setTimeout(() => {
+                    checkBtn.textContent = originalText;
+                    checkBtn.style.background = 'rgba(76, 175, 80, 0.9)';
+                    checkBtn.disabled = false;
+                }, 2000);
+            }
         });
 
         // 切换模型按钮事件
@@ -751,6 +962,7 @@ avtr_xxxxxx,"${t('modelName')}",${t('authorName')}</pre>
                 </div>
             </div>
             <button class="avatar-db-button batch-delete-btn">${t('batchDelete')}</button>
+            <button class="avatar-db-button batch-check-btn">${t('batchCheck')}</button>
             <button class="avatar-db-button refresh-btn">
                 <span class="refresh-text">${t('refreshList')}</span>
                 <span class="refresh-spinner" style="display: none;">⟳</span>
@@ -844,6 +1056,12 @@ avtr_xxxxxx,"${t('modelName')}",${t('authorName')}</pre>
         let selectedAvatars = new Set();
         batchDeleteBtn.addEventListener('click', () => {
             this.handleBatchDelete(batchDeleteBtn, avatarContainer, selectedAvatars);
+        });
+        
+        // 批量检查事件
+        const batchCheckBtn = header.querySelector('.batch-check-btn');
+        batchCheckBtn.addEventListener('click', () => {
+            this.handleBatchCheck(batchCheckBtn, avatarContainer, selectedAvatars);
         });
 
         // 刷新按钮事件
@@ -1200,6 +1418,577 @@ avtr_xxxxxx,"${t('modelName')}",${t('authorName')}</pre>
         selectedAvatars.clear();
     }
 
+    // 处理批量检查
+    handleBatchCheck(batchCheckBtn, avatarContainer, selectedAvatars) {
+        const cards = avatarContainer.querySelectorAll('.avatar-card');
+        
+        // 进入批量检查模式
+        if (batchCheckBtn.textContent === t('batchCheck')) {
+            // 显示复选框
+            cards.forEach(card => {
+                if (!card.querySelector('.select-checkbox')) {
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.className = 'select-checkbox';
+                    checkbox.style.cssText = `
+                        position: absolute;
+                        top: 10px;
+                        left: 10px;
+                        width: 20px;
+                        height: 20px;
+                        z-index: 1;
+                        cursor: pointer;
+                    `;
+                    card.appendChild(checkbox);
+
+                    checkbox.addEventListener('change', (e) => {
+                        const avatarId = card.dataset.avatarId;
+                        if (e.target.checked) {
+                            selectedAvatars.add(avatarId);
+                            card.style.backgroundColor = 'rgba(33, 150, 243, 0.1)';
+                        } else {
+                            selectedAvatars.delete(avatarId);
+                            card.style.backgroundColor = '';
+                        }
+                        // 更新按钮文本显示选中数量
+                        batchCheckBtn.textContent = `${t('confirmCheck')} (${selectedAvatars.size})`;
+                    });
+                }
+                // 显示所有复选框
+                const checkbox = card.querySelector('.select-checkbox');
+                checkbox.style.display = 'block';
+                // 重置选中状态
+                checkbox.checked = false;
+                card.style.backgroundColor = '';
+            });
+
+            // 更改按钮状态
+            batchCheckBtn.textContent = `${t('confirmCheck')} (0)`;
+            batchCheckBtn.style.backgroundColor = '#2196F3'; // 蓝色
+            
+            // 添加取消按钮
+            const cancelBtn = document.createElement('button');
+            cancelBtn.className = 'avatar-db-button cancel-check-btn';
+            cancelBtn.textContent = t('cancel');
+            cancelBtn.style.backgroundColor = '#9e9e9e';
+            batchCheckBtn.parentNode.insertBefore(cancelBtn, batchCheckBtn.nextSibling);
+
+            // 取消按钮事件
+            cancelBtn.addEventListener('click', () => {
+                this.exitBatchCheckMode(batchCheckBtn, cards, selectedAvatars);
+                cancelBtn.remove();
+            });
+
+        } else {
+            // 确认检查
+            if (selectedAvatars.size > 0) {
+                console.log('准备开始批量检查', selectedAvatars.size, '个模型');
+                
+                // 移除可能存在的旧模态框和遮罩
+                const existingModals = document.querySelectorAll('.avatar-db-modal, .avatar-db-modal-overlay');
+                existingModals.forEach(elem => {
+                    try {
+                        document.body.removeChild(elem);
+                    } catch (e) {
+                        console.warn('移除现有模态框元素失败:', e);
+                    }
+                });
+                
+                try {
+                    // 创建结果模态框
+                    const { overlay, modal } = this.createCheckResultsModal();
+                    
+                    // 先添加遮罩和模态框到DOM
+                    document.body.appendChild(overlay);
+                    document.body.appendChild(modal);
+                    console.log('检查结果模态框已添加到DOM');
+                    
+                    // 强制重排，确保显示
+                    setTimeout(() => {
+                        modal.style.opacity = '0.99';
+                        setTimeout(() => {
+                            modal.style.opacity = '1';
+                        }, 10);
+                    }, 0);
+                    
+                    // 开始批量检查
+                    this.startBatchCheck(Array.from(selectedAvatars), modal);
+                } catch (error) {
+                    console.error('创建或显示检查结果模态框失败:', error);
+                    alert('创建检查结果界面失败，请重试');
+                }
+            } else {
+                alert(t('noModelSelected'));
+            }
+            
+            // 退出批量检查模式
+            this.exitBatchCheckMode(batchCheckBtn, cards, selectedAvatars);
+            const cancelBtn = document.querySelector('.cancel-check-btn');
+            if (cancelBtn) cancelBtn.remove();
+        }
+    }
+
+    // 退出批量检查模式
+    exitBatchCheckMode(batchCheckBtn, cards, selectedAvatars) {
+        // 隐藏复选框
+        cards.forEach(card => {
+            const checkbox = card.querySelector('.select-checkbox');
+            if (checkbox) {
+                checkbox.style.display = 'none';
+            }
+            card.style.backgroundColor = '';
+        });
+
+        // 重置按钮状态
+        batchCheckBtn.textContent = t('batchCheck') || '批量检查';
+        batchCheckBtn.style.backgroundColor = '';
+        
+        // 清空选中集合
+        selectedAvatars.clear();
+    }
+
+    // 创建检查结果模态框
+    createCheckResultsModal() {
+        // 创建半透明背景遮罩
+        const overlay = document.createElement('div');
+        overlay.className = 'avatar-db-modal-overlay';
+        overlay.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 99999;
+        `;
+
+        const modal = document.createElement('div');
+        modal.className = 'avatar-db-modal check-results-modal';
+        modal.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(244, 247, 250, 0.98);
+            padding: 20px;
+            border-radius: 16px;
+            z-index: 100000;
+            box-shadow: 0 4px 20px rgba(33, 150, 243, 0.3);
+            color: #1565C0;
+            width: 600px;
+            max-width: 90vw;
+            max-height: 80vh;
+            overflow-y: auto;
+            display: block;
+            visibility: visible;
+            opacity: 1;
+            pointer-events: auto;
+        `;
+
+        // 创建标题
+        const title = document.createElement('h3');
+        title.textContent = t('checkingModels') || '正在检查模型...';
+        title.style.cssText = `
+            margin: 10px 0 20px;
+            color: #1565C0;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        `;
+        
+        // 创建进度显示
+        const progress = document.createElement('div');
+        progress.className = 'check-progress';
+        progress.style.cssText = `
+            height: 6px;
+            width: 100%;
+            background: #E3F2FD;
+            border-radius: 3px;
+            margin: 20px 0;
+            overflow: hidden;
+        `;
+        
+        const progressBar = document.createElement('div');
+        progressBar.className = 'check-progress-bar';
+        progressBar.style.cssText = `
+            height: 100%;
+            width: 0%;
+            background: #2196F3;
+            transition: width 0.3s;
+        `;
+        progress.appendChild(progressBar);
+
+        // 创建状态容器
+        const status = document.createElement('div');
+        status.className = 'check-status';
+        status.style.cssText = `
+            text-align: center;
+            color: #757575;
+            margin-bottom: 20px;
+            font-size: 14px;
+        `;
+        status.textContent = '准备检查...';
+        
+        // 创建检查结果统计
+        const stats = document.createElement('div');
+        stats.className = 'check-stats';
+        stats.style.cssText = `
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        `;
+        
+        // 添加三种类型的计数器
+        const createStat = (id, label, color) => {
+            const stat = document.createElement('div');
+            stat.style.cssText = `
+                text-align: center;
+                color: ${color};
+            `;
+            stat.innerHTML = `
+                <div style="font-size: 32px; font-weight: bold;" id="${id}">0</div>
+                <div>${label}</div>
+            `;
+            return stat;
+        };
+        
+        stats.appendChild(createStat('updated-count', t('updatedModels') || '已更新', '#4CAF50'));
+        stats.appendChild(createStat('deleted-count', t('deletedModels') || '已删除', '#F44336'));
+        stats.appendChild(createStat('error-count', t('errorModels') || '检查失败', '#FF9800'));
+        
+        // 创建结果列表容器
+        const results = document.createElement('div');
+        results.className = 'check-results';
+        results.style.cssText = `
+            margin-top: 20px;
+        `;
+        
+        // 被删除模型的容器
+        const deletedContainer = document.createElement('div');
+        deletedContainer.className = 'deleted-models-container';
+        deletedContainer.style.cssText = `
+            margin-top: 20px;
+            display: none;
+            background-color: rgba(244, 67, 54, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+            border-left: 4px solid #F44336;
+        `;
+        
+        const deletedTitle = document.createElement('h4');
+        deletedTitle.textContent = t('deletedModels') || '已删除模型';
+        deletedTitle.style.cssText = `
+            margin: 0 0 10px 0;
+            color: #F44336;
+            font-size: 16px;
+        `;
+        
+        const deletedList = document.createElement('div');
+        deletedList.className = 'deleted-models-list';
+        deletedList.style.cssText = `
+            max-height: 200px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 13px;
+        `;
+        
+        deletedContainer.appendChild(deletedTitle);
+        deletedContainer.appendChild(deletedList);
+        
+        // 创建关闭按钮
+        const closeBtn = document.createElement('button');
+        closeBtn.innerHTML = '×';
+        closeBtn.style.cssText = `
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            padding: 0;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #E3F2FD;
+            color: #1565C0;
+            border: none;
+            cursor: pointer;
+            z-index: 1;
+            transition: all 0.3s ease;
+        `;
+        
+        // 添加按钮悬停效果
+        closeBtn.addEventListener('mouseenter', () => {
+            closeBtn.style.backgroundColor = '#BBDEFB';
+        });
+        closeBtn.addEventListener('mouseleave', () => {
+            closeBtn.style.backgroundColor = '#E3F2FD';
+        });
+        
+        // 添加关闭按钮事件
+        closeBtn.addEventListener('click', () => {
+            document.body.removeChild(overlay);
+            document.body.removeChild(modal);
+        });
+        
+        // 创建导出删除的ID按钮
+        const exportBtn = document.createElement('button');
+        exportBtn.className = 'avatar-db-button export-deleted-btn';
+        exportBtn.textContent = t('exportDeletedIds') || '导出已删除ID';
+        exportBtn.style.cssText = `
+            margin: 20px auto;
+            display: block;
+            background-color: #F44336;
+            color: white;
+            opacity: 0.7;
+            pointer-events: none;
+        `;
+        
+        // 组装模态框
+        modal.appendChild(closeBtn);
+        modal.appendChild(title);
+        modal.appendChild(progress);
+        modal.appendChild(status);
+        modal.appendChild(stats);
+        modal.appendChild(results);
+        modal.appendChild(deletedContainer);
+        modal.appendChild(exportBtn);
+        
+        return { overlay, modal, deletedList };
+    }
+    
+    // 开始批量检查
+    async startBatchCheck(avatarIds, resultsModal) {
+        console.log('开始批量检查', avatarIds.length, '个模型');
+        
+        // 从resultsModal解构出需要的元素
+        const modal = resultsModal;
+        const progressBar = modal.querySelector('.check-progress-bar');
+        const status = modal.querySelector('.check-status');
+        const results = modal.querySelector('.check-results');
+        const title = modal.querySelector('h3');
+        const exportBtn = modal.querySelector('.export-deleted-btn');
+        const deletedContainer = modal.querySelector('.deleted-models-container');
+        const deletedList = modal.querySelector('.deleted-models-list');
+        
+        // 统计数据
+        let updated = 0;
+        let deleted = 0;
+        let errors = 0;
+        const deletedIds = [];
+        
+        // 更新统计展示
+        const updateStats = () => {
+            modal.querySelector('#updated-count').textContent = updated;
+            modal.querySelector('#deleted-count').textContent = deleted;
+            modal.querySelector('#error-count').textContent = errors;
+        };
+        
+        // 添加结果项
+        const addResultItem = (avatar, result) => {
+            const item = document.createElement('div');
+            item.style.cssText = `
+                display: flex;
+                align-items: center;
+                padding: 10px;
+                border-radius: 8px;
+                margin-bottom: 10px;
+                border-left: 4px solid ${result.status === 'available' ? '#4CAF50' : result.status === 'unavailable' ? '#F44336' : '#FF9800'};
+                background: ${result.status === 'available' ? 'rgba(76, 175, 80, 0.1)' : result.status === 'unavailable' ? 'rgba(244, 67, 54, 0.1)' : 'rgba(255, 152, 0, 0.1)'};
+            `;
+            
+            item.innerHTML = `
+                <div style="width: 40px; height: 40px; margin-right: 10px; flex-shrink: 0; overflow: hidden; border-radius: 4px;">
+                    <img src="${avatar.thumbnailImageUrl}" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div style="flex-grow: 1; overflow: hidden;">
+                    <div style="font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${avatar.name}</div>
+                    <div style="font-size: 12px; color: #757575;">${avatar.id}</div>
+                </div>
+                <div style="margin-left: 10px; flex-shrink: 0; color: ${result.status === 'available' ? '#4CAF50' : result.status === 'unavailable' ? '#F44336' : '#FF9800'};">
+                    ${result.status === 'available' ? t('checkSuccess') || '已更新' : 
+                      result.status === 'unavailable' ? t('checkDeleted') || '已删除' : 
+                      t('checkError') || '检查失败'}
+                </div>
+            `;
+            
+            // 添加到结果列表
+            results.appendChild(item);
+            
+            // 如果是被删除的模型，同时添加到删除列表
+            if (result.status === 'unavailable') {
+                const deletedItem = document.createElement('div');
+                deletedItem.style.cssText = `
+                    display: flex;
+                    justify-content: space-between;
+                    padding: 5px 0;
+                    border-bottom: 1px dashed #E0E0E0;
+                `;
+                deletedItem.innerHTML = `
+                    <div style="flex-grow: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${avatar.name}</div>
+                    <div style="color: #757575; margin-left: 10px;">${avatar.id}</div>
+                `;
+                deletedList.appendChild(deletedItem);
+                
+                // 如果有删除的模型，显示删除模型容器
+                deletedContainer.style.display = 'block';
+            }
+        };
+        
+        // 延时函数，用于控制请求速率
+        const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+        
+        // 遍历所有选中的模型进行检查
+        for (let i = 0; i < avatarIds.length; i++) {
+            const avatarId = avatarIds[i];
+            const progress = Math.round(((i + 1) / avatarIds.length) * 100);
+            
+            // 更新进度条
+            progressBar.style.width = `${progress}%`;
+            
+            // 更新状态文本
+            status.textContent = `${t('checking') || '检查中'} ${i + 1}/${avatarIds.length} (${progress}%)`;
+            
+            try {
+                // 获取模型数据
+                const avatar = this.db.getAllAvatars().find(a => a.id === avatarId);
+                if (!avatar) {
+                    console.error(`找不到模型数据: ${avatarId}`);
+                    errors++;
+                    updateStats();
+                    continue;
+                }
+                
+                console.log(`开始检查模型 ${i+1}/${avatarIds.length}: ${avatar.name} (${avatar.id})`);
+                
+                // 检查模型状态
+                const result = await this.db.checkAvatarStatus(avatarId);
+                console.log(`模型检查结果:`, result);
+                
+                if (result.status === 'available') {
+                    // 模型可用，更新数据
+                    this.db.updateAvatar(avatarId, result.data);
+                    addResultItem(avatar, result);
+                    updated++;
+                } else if (result.status === 'unavailable') {
+                    // 模型不可用，从数据库中删除
+                    this.db.deleteAvatar(avatarId);
+                    addResultItem(avatar, result);
+                    deleted++;
+                    deletedIds.push({ id: avatarId, name: avatar.name });
+                } else {
+                    // 检查出错
+                    addResultItem(avatar, result);
+                    errors++;
+                }
+                
+                // 更新统计
+                updateStats();
+                
+                // 延时以避免请求过快
+                await delay(500);
+            } catch (error) {
+                console.error(`批量检查模型失败 ${avatarId}:`, error);
+                errors++;
+                updateStats();
+                await delay(500);
+            }
+        }
+        
+        // 检查完成后更新界面
+        title.textContent = t('checkComplete') || '检查完成';
+        status.textContent = `${t('checkComplete') || '检查完成'}: ${updated} ${t('updated') || '已更新'}, ${deleted} ${t('deleted') || '已删除'}, ${errors} ${t('failed') || '失败'}`;
+        
+        // 如果有删除的模型，启用导出按钮
+        if (deleted > 0) {
+            exportBtn.style.opacity = '1';
+            exportBtn.style.pointerEvents = 'auto';
+            
+            // 添加导出点击事件
+            exportBtn.addEventListener('click', () => {
+                const content = deletedIds.map(item => `${item.id},${item.name}`).join('\n');
+                downloadFile(content, 'deleted_vrchat_avatars.csv');
+            });
+        }
+        
+        // 自动刷新模型列表
+        if (updated > 0 || deleted > 0) {
+            // 获取当前显示的容器
+            const avatarContainer = document.querySelector('.avatar-grid-container');
+            if (avatarContainer) {
+                // 获取当前的排序和搜索条件
+                const header = document.querySelector('.header');
+                const currentSort = header.querySelector('.sort-select').value;
+                const searchTerm = header.querySelector('.search-box').value.toLowerCase();
+                
+                // 重新获取并显示数据
+                let updatedAvatars = this.db.getAllAvatars();
+                
+                // 应用搜索过滤
+                if (searchTerm) {
+                    updatedAvatars = updatedAvatars.filter(avatar => 
+                        avatar.name.toLowerCase().includes(searchTerm) || 
+                        avatar.authorName.toLowerCase().includes(searchTerm)
+                    );
+                }
+
+                // 应用排序
+                if (currentSort === 'latest') {
+                    updatedAvatars.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+                } else if (currentSort === 'oldest') {
+                    updatedAvatars.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+                } else if (currentSort === 'quest') {
+                    updatedAvatars.sort((a, b) => {
+                        // 获取 Quest 包的性能评级
+                        const getQuestRating = (avatar) => {
+                            const questPackages = avatar.unityPackages
+                                .filter(pkg => pkg.platform === 'android' && pkg.variant === 'security')
+                                .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+                            return questPackages[0]?.performanceRating || 'None';
+                        };
+
+                        // 检查是否支持 Quest
+                        const aQuest = a.unityPackages.some(pkg => pkg.platform === 'android');
+                        const bQuest = b.unityPackages.some(pkg => pkg.platform === 'android');
+
+                        // 如果一个支持 Quest 而另一个不支持，支持的排在前面
+                        if (aQuest && !bQuest) return -1;
+                        if (!aQuest && bQuest) return 1;
+
+                        // 如果都支持 Quest，按性能评级排序
+                        if (aQuest && bQuest) {
+                            const aRating = getQuestRating(a);
+                            const bRating = getQuestRating(b);
+                            const ratingPriority = {
+                                'Excellent': 1,
+                                'Good': 2,
+                                'Medium': 3,
+                                'Poor': 4,
+                                'VeryPoor': 5,
+                                'None': 6,
+                                'Unknown': 7
+                            };
+                            return ratingPriority[aRating] - ratingPriority[bRating];
+                        }
+
+                        // 如果都不支持 Quest，按创建时间排序
+                        return new Date(b.created_at) - new Date(a.created_at);
+                    });
+                }
+
+                // 更新显示
+                this.renderAvatars(updatedAvatars, avatarContainer);
+                
+                // 更新计数器
+                const avatarCount = header.querySelector('.avatar-count');
+                if (avatarCount) {
+                    avatarCount.textContent = `${t('modelCount')}: ${updatedAvatars.length}`;
+                }
+            }
+        }
+    }
+
     // 监视模型详情页面加载
     setupAvatarPageListeners() {
         // 创建MutationObserver来监听DOM变化
@@ -1356,5 +2145,214 @@ avtr_xxxxxx,"${t('modelName')}",${t('authorName')}</pre>
         
         // 插入按钮到"Change Into Avatar"按钮上方
         changeButton.parentNode.insertBefore(saveButton, changeButton);
+    }
+
+    // 创建ID模态框
+    createIdModal(title, id, name) {
+        console.log(`正在创建模态框: 标题=${title}, ID=${id}, 名称=${name}`);
+        
+        // 先移除可能存在的旧模态框
+        try {
+            const existingModals = document.querySelectorAll('.avatar-db-modal, .avatar-db-modal-overlay');
+            existingModals.forEach(m => {
+                try {
+                    document.body.removeChild(m);
+                } catch (e) {
+                    console.warn('移除已存在元素失败:', e);
+                }
+            });
+        } catch (e) {
+            console.warn('清理旧模态框失败:', e);
+        }
+        
+        // 创建半透明背景遮罩
+        const overlay = document.createElement('div');
+        overlay.className = 'avatar-db-modal-overlay';
+        overlay.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 99999;
+        `;
+        
+        const modal = document.createElement('div');
+        modal.className = 'avatar-db-modal';
+        modal.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(244, 247, 250, 0.98);
+            padding: 20px;
+            border-radius: 16px;
+            z-index: 100000;
+            box-shadow: 0 4px 20px rgba(244, 67, 54, 0.3);
+            color: #1565C0;
+            width: 400px;
+            max-width: 90vw;
+            pointer-events: auto;
+            display: block;
+            visibility: visible;
+            opacity: 1;
+        `;
+
+        // 创建关闭按钮
+        const closeBtn = document.createElement('button');
+        closeBtn.innerHTML = '×';
+        closeBtn.style.cssText = `
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            padding: 0;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #E3F2FD;
+            color: #1565C0;
+            border: none;
+            cursor: pointer;
+            z-index: 1;
+            transition: all 0.3s ease;
+        `;
+
+        // 添加按钮悬停效果
+        closeBtn.addEventListener('mouseenter', () => {
+            closeBtn.style.backgroundColor = '#BBDEFB';
+        });
+        closeBtn.addEventListener('mouseleave', () => {
+            closeBtn.style.backgroundColor = '#E3F2FD';
+        });
+
+        // 创建内容
+        const content = document.createElement('div');
+        content.style.cssText = `
+            text-align: center;
+            padding: 10px;
+        `;
+        
+        // 标题
+        const titleElem = document.createElement('h3');
+        titleElem.textContent = title || '模型已删除';
+        titleElem.style.cssText = `
+            margin: 10px 0 20px;
+            color: #F44336;
+            font-size: 16px;
+            font-weight: bold;
+        `;
+        
+        // 显示ID和复制按钮的容器
+        const idContainer = document.createElement('div');
+        idContainer.style.cssText = `
+            display: flex;
+            margin: 20px 0;
+            background: #F5F5F5;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #E0E0E0;
+        `;
+        
+        // ID显示框
+        const idDisplay = document.createElement('input');
+        idDisplay.type = 'text';
+        idDisplay.value = id;
+        idDisplay.readOnly = true;
+        idDisplay.style.cssText = `
+            flex: 1;
+            padding: 10px 15px;
+            border: none;
+            background: transparent;
+            font-family: monospace;
+            color: #333;
+            font-size: 14px;
+        `;
+        
+        // 复制按钮
+        const copyBtn = document.createElement('button');
+        copyBtn.textContent = t('copyId') || '复制ID';
+        copyBtn.style.cssText = `
+            background: #2196F3;
+            color: white;
+            border: none;
+            padding: 0 15px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: background 0.3s;
+        `;
+        
+        copyBtn.addEventListener('mouseenter', () => {
+            copyBtn.style.background = '#1976D2';
+        });
+        
+        copyBtn.addEventListener('mouseleave', () => {
+            copyBtn.style.background = '#2196F3';
+        });
+        
+        copyBtn.addEventListener('click', () => {
+            idDisplay.select();
+            document.execCommand('copy');
+            const originalText = copyBtn.textContent;
+            copyBtn.textContent = t('copySuccess') || '已复制';
+            copyBtn.style.background = '#4CAF50';
+            setTimeout(() => {
+                copyBtn.textContent = originalText;
+                copyBtn.style.background = '#2196F3';
+            }, 1500);
+        });
+        
+        // 模型名称显示
+        const nameInfo = document.createElement('p');
+        nameInfo.textContent = `${t('modelName') || '模型名称'}: ${name}`;
+        nameInfo.style.cssText = `
+            margin: 15px 0;
+            color: #555;
+            font-size: 14px;
+        `;
+
+        // 组装ID容器
+        idContainer.appendChild(idDisplay);
+        idContainer.appendChild(copyBtn);
+        
+        // 组装内容
+        content.appendChild(titleElem);
+        content.appendChild(nameInfo);
+        content.appendChild(idContainer);
+
+        // 添加关闭按钮事件
+        const closeModal = () => {
+            try {
+                document.body.removeChild(overlay);
+                document.body.removeChild(modal);
+            } catch (e) {
+                console.error('移除模态框失败:', e);
+            }
+        };
+        
+        closeBtn.addEventListener('click', closeModal);
+        
+        // 点击背景遮罩也可以关闭
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+                closeModal();
+            }
+        });
+
+        // 组装模态框
+        modal.appendChild(closeBtn);
+        modal.appendChild(content);
+        
+        console.log('模态框创建完成');
+        
+        // 一起返回遮罩和模态框
+        return {
+            overlay,
+            modal
+        };
     }
 } 

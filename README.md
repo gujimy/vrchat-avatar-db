@@ -31,6 +31,7 @@ A Tampermonkey script for managing VRChat avatars.
 - Import/export avatar data (supports multiple formats)
 - Search and sort functionality
 - Batch delete feature
+- Model status check (batch check and auto-clean invalid models)
 - PC/Quest platform support display
 - Performance rating display
 - One-click avatar switching

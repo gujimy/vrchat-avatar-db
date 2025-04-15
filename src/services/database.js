@@ -158,6 +158,53 @@ export class AvatarDatabase {
         
         return avatarIds;
     }
+
+    // 检查模型状态
+    async checkAvatarStatus(avatarId) {
+        try {
+            console.log(`开始获取模型数据: ${avatarId}`);
+            const data = await this.fetchAvatarData(avatarId);
+            console.log(`成功获取模型数据: ${avatarId}`, data);
+            return {
+                status: 'available',
+                data: data
+            };
+        } catch (error) {
+            console.error(`获取模型数据失败: ${avatarId}`, error);
+            // 详细检查错误信息以确定模型状态
+            const errorMsg = error.message || '';
+            
+            // 如果错误状态码是404，则认为模型已失效
+            if (errorMsg.includes('404') || 
+                errorMsg.toLowerCase().includes('not found') || 
+                errorMsg.toLowerCase().includes('无法找到') || 
+                errorMsg.toLowerCase().includes('不存在')) {
+                console.log(`模型已失效(404): ${avatarId}`);
+                return {
+                    status: 'unavailable',
+                    error: errorMsg
+                };
+            } else {
+                console.log(`模型检查出错(非404): ${avatarId}`);
+                return {
+                    status: 'error',
+                    error: errorMsg
+                };
+            }
+        }
+    }
+    
+    // 更新模型数据
+    updateAvatar(avatarId, newData) {
+        const avatars = this.getAllAvatars();
+        const index = avatars.findIndex(avatar => avatar.id === avatarId);
+        if (index !== -1) {
+            avatars[index] = newData;
+            GM_setValue(this.DB_KEY, JSON.stringify(avatars));
+            return true;
+        }
+        return false;
+    }
 }
 
 const db = new AvatarDatabase();

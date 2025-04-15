@@ -1,6 +1,6 @@
 {
   "name": "vrchat-avatar-db",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "VRChat Avatar Database Manager",
   "main": "dist/vrchat_avatar_db.user.js",
   "scripts": {

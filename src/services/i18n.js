@@ -14,6 +14,8 @@ const translations = {
         batchDelete: '批量删除',
         batchCheck: '批量检查',
         confirmCheck: '确认检查',
+        selectAll: '全选',
+        deselectAll: '取消全选',
         checkingModels: '正在检查模型...',
         checkComplete: '检查完成',
         updatedModels: '已更新',
@@ -107,6 +109,8 @@ const translations = {
         batchDelete: '一括削除',
         batchCheck: '一括チェック',
         confirmCheck: 'チェック実行',
+        selectAll: 'すべて選択',
+        deselectAll: '選択解除',
         checkingModels: 'アバターをチェック中...',
         checkComplete: 'チェック完了',
         updatedModels: '更新済み',
@@ -200,6 +204,8 @@ const translations = {
         batchDelete: 'Batch Delete',
         batchCheck: 'Batch Check',
         confirmCheck: 'Confirm Check',
+        selectAll: 'Select All',
+        deselectAll: 'Deselect All',
         checkingModels: 'Checking Models...',
         checkComplete: 'Check Complete',
         updatedModels: 'Updated',
@@ -333,4 +339,4 @@ export function getCurrentLanguage() {
 // 获取所有支持的语言
 export function getSupportedLanguages() {
     return languages;
-} 
+}

@@ -1452,6 +1452,11 @@ avtr_xxxxxx,"${t('modelName')}",${t('authorName')}</pre>
                         }
                         // 更新按钮文本显示选中数量
                         batchCheckBtn.textContent = `${t('confirmCheck')} (${selectedAvatars.size})`;
+                        // 更新全选按钮状态
+                        const selectAllBtn = document.querySelector('.select-all-check-btn');
+                        if (selectAllBtn) {
+                            selectAllBtn.textContent = selectedAvatars.size === cards.length ? t('deselectAll') : t('selectAll');
+                        }
                     });
                 }
                 // 显示所有复选框
@@ -1466,6 +1471,36 @@ avtr_xxxxxx,"${t('modelName')}",${t('authorName')}</pre>
             batchCheckBtn.textContent = `${t('confirmCheck')} (0)`;
             batchCheckBtn.style.backgroundColor = '#2196F3'; // 蓝色
             
+            // 添加全选按钮
+            const selectAllBtn = document.createElement('button');
+            selectAllBtn.className = 'avatar-db-button select-all-check-btn';
+            selectAllBtn.textContent = t('selectAll');
+            selectAllBtn.style.backgroundColor = '#4CAF50';
+            batchCheckBtn.parentNode.insertBefore(selectAllBtn, batchCheckBtn.nextSibling);
+            
+            // 添加全选按钮事件
+            selectAllBtn.addEventListener('click', () => {
+                const allChecked = selectedAvatars.size === cards.length;
+                cards.forEach(card => {
+                    const checkbox = card.querySelector('.select-checkbox');
+                    const avatarId = card.dataset.avatarId;
+                    if (allChecked) {
+                        // 取消全选
+                        checkbox.checked = false;
+                        selectedAvatars.delete(avatarId);
+                        card.style.backgroundColor = '';
+                    } else {
+                        // 全选
+                        checkbox.checked = true;
+                        selectedAvatars.add(avatarId);
+                        card.style.backgroundColor = 'rgba(33, 150, 243, 0.1)';
+                    }
+                });
+                // 更新按钮文本
+                batchCheckBtn.textContent = `${t('confirmCheck')} (${selectedAvatars.size})`;
+                selectAllBtn.textContent = allChecked ? t('selectAll') : t('deselectAll');
+            });
+
             // 添加取消按钮
             const cancelBtn = document.createElement('button');
             cancelBtn.className = 'avatar-db-button cancel-check-btn';
@@ -1476,6 +1511,7 @@ avtr_xxxxxx,"${t('modelName')}",${t('authorName')}</pre>
             // 取消按钮事件
             cancelBtn.addEventListener('click', () => {
                 this.exitBatchCheckMode(batchCheckBtn, cards, selectedAvatars);
+                selectAllBtn.remove();
                 cancelBtn.remove();
             });
 
@@ -1523,7 +1559,9 @@ avtr_xxxxxx,"${t('modelName')}",${t('authorName')}</pre>
             
             // 退出批量检查模式
             this.exitBatchCheckMode(batchCheckBtn, cards, selectedAvatars);
+            const selectAllBtn = document.querySelector('.select-all-check-btn');
             const cancelBtn = document.querySelector('.cancel-check-btn');
+            if (selectAllBtn) selectAllBtn.remove();
             if (cancelBtn) cancelBtn.remove();
         }
     }
@@ -2355,4 +2393,4 @@ avtr_xxxxxx,"${t('modelName')}",${t('authorName')}</pre>
             modal
         };
     }
-} 
+}

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         VRChat Avatar Database Manager
 // @namespace    http://tampermonkey.net/
-// @version      0.5.0
+// @version      0.5.2
 // @description  管理VRChat模型数据库
 // @author       laomo
 // @match        *://vrchat.com/*
@@ -131,4 +131,4 @@ import { showToast } from './services/utils';
             setupPageChangeListeners();
         });
     }
-})(); 
+})();
